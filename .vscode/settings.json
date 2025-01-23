@@ -3,5 +3,6 @@
     "postgresql",
     "STOCKLY",
     "uuid"
-  ]
+  ],
+  "WillLuke.nextjs.hasPrompted": true
 }
