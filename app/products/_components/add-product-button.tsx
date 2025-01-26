@@ -11,9 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/app/_components/ui/dialog";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -24,24 +25,23 @@ import {
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
 import { NumericFormat } from "react-number-format";
-
-import { z } from "zod";
+import { createProduct } from "@/app/_actions/products/create-products";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
-    message: "O nome do produto é obrigatório",
+    message: "O nome do produto é obrigatório.",
   }),
   price: z.number().min(0.01, {
-    message: "O preço do produto é obrigatório",
+    message: "O preço do produto é obrigatório.",
   }),
   stock: z.coerce
     .number()
     .positive({
-      message: "A quantidade do estoque deve ser positiva",
+      message: "A quantidade em estoque deve ser positiva.",
     })
     .int()
     .min(0, {
-      message: "A quantidade em estoque é obrigatória",
+      message: "A quantidade em estoque é obrigatória.",
     }),
 });
 
@@ -58,23 +58,27 @@ const AddProductButton = () => {
     },
   });
 
-  const onSubmit = (data: FormSchema) => {
-    console.log({ data });
+  const onSubmit = async (data: FormSchema) => {
+    try {
+      await createProduct(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="add-product gap-2">
+        <Button className="gap-2">
           <PlusIcon size={20} />
-          Novo Produto
+          Novo produto
         </Button>
       </DialogTrigger>
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <DialogHeader>
-              <DialogTitle>Criar Produto</DialogTitle>
+              <DialogTitle>Criar produto</DialogTitle>
               <DialogDescription>
                 Insira as informações abaixo
               </DialogDescription>
@@ -85,9 +89,9 @@ const AddProductButton = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nome do Produto</FormLabel>
+                  <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input placeholder="Infome o nome do produto" {...field} />
+                    <Input placeholder="Digite o nome do produto" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +102,7 @@ const AddProductButton = () => {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Preço do Produto</FormLabel>
+                  <FormLabel>Preço</FormLabel>
                   <FormControl>
                     <NumericFormat
                       thousandSeparator="."
@@ -119,17 +123,16 @@ const AddProductButton = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="stock"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Estoque do Produto</FormLabel>
+                  <FormLabel>Estoque</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="Informe o estoque do produto"
+                      placeholder="Digite o estoque do produto"
                       {...field}
                     />
                   </FormControl>
@@ -140,17 +143,11 @@ const AddProductButton = () => {
 
             <DialogFooter>
               <DialogClose asChild>
-                <Button
-                  variant="destructive"
-                  type="reset"
-                  className="btn-cancel"
-                >
+                <Button variant="destructive" type="reset">
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit" className="btn-submit">
-                Salvar
-              </Button>
+              <Button type="submit">Salvar</Button>
             </DialogFooter>
           </form>
         </Form>
