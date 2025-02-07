@@ -37,7 +37,7 @@ const formSchema = z.object({
   stock: z.coerce
     .number()
     .positive({
-      message: "A quantidade em estoque deve ser positiva.",
+      message: "A quantidade em estoque deve ser positivo.",
     })
     .int()
     .min(0, {
@@ -53,7 +53,6 @@ const AddProductButton = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      price: 0,
       stock: 1,
     },
   });
