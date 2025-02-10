@@ -1,7 +1,7 @@
 import { DataTable } from "../_components/ui/data-table";
 import { productsTableColumns } from "./_components/table-columns";
 import { getProducts } from "../_data-access/product/get-products";
-import AddProductButton from "./_components/add-product-button";
+import CreateProductButton from "./_components/create-product-button";
 
 export const revalidate = 10;
 
@@ -20,7 +20,7 @@ const Products = async () => {
           </span>
           <p className="text-xl font-semibold">Produtos</p>
         </div>
-        <AddProductButton />
+        <CreateProductButton />
       </div>
       {/* Direita */}
       <DataTable columns={productsTableColumns} data={products} />
