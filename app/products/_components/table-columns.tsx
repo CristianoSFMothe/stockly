@@ -90,10 +90,12 @@ export const productsTableColumns: ColumnDef<Product>[] = [
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                <DropdownMenuSeparator
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="gap-1.5"
+                  data-testid="copy-id"
                   onClick={() => navigator.clipboard.writeText(product.id)}
-                />
-                <DropdownMenuItem className="gap-1.5" data-testid="delete">
+                >
                   <ClipboardCopyIcon size={16} />
                   Copiar ID
                 </DropdownMenuItem>
