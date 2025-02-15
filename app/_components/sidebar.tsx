@@ -11,17 +11,17 @@ const Sidebar = () => {
 
       {/* Botões */}
       <div className="flex flex-col gap-2 p-2">
-        <SidebarButton href="/">
+        <SidebarButton href="/" data-testid="btn-dashboard">
           <LayoutDashboard size={20} />
           Dashboard
         </SidebarButton>
 
-        <SidebarButton href="/products">
+        <SidebarButton href="/products" data-testid="btn-product">
           <PackageIcon size={20} />
           Produtos
         </SidebarButton>
 
-        <SidebarButton href="/sales">
+        <SidebarButton href="/sales" data-testid="btn-sales">
           <ShoppingBasketIcon size={20} />
           Vendas
         </SidebarButton>
