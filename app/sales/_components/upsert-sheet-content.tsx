@@ -34,6 +34,7 @@ import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { formatCurrency } from "./../../_helpers/currency";
+import SalesTableDropdownMenu from "./table-dropdown-menu";
 
 const formSchema = z.object({
   productId: z.string().uuid({
@@ -115,6 +116,12 @@ const UpsertSheetContent = ({
     }, 0);
   }, [selectedProducts]);
 
+  const onDelete = (productId: string) => {
+    setSelectedProduct((currentProducts) => {
+      return currentProducts.filter((product) => product.id !== productId);
+    });
+  };
+
   return (
     <SheetContent className="!max-w-[700px]">
       <SheetHeader>
@@ -184,17 +191,33 @@ const UpsertSheetContent = ({
             <TableHead>Preço Unitário</TableHead>
             <TableHead>Quantidade</TableHead>
             <TableHead>Total</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {selectedProducts.map((product) => (
             <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>{formatCurrency(product.price)}</TableCell>
-              <TableCell>{product.quantity}</TableCell>
-              <TableCell>
+              <TableCell className={product.name}>{product.name}</TableCell>
+              <TableCell className={`price-${product.price}`}>
+                {formatCurrency(product.price)}
+              </TableCell>
+              <TableCell className={`quantity-${product.quantity}`}>
+                {product.quantity}
+              </TableCell>
+              <TableCell
+                className={`total-price-${product.price * product.quantity}`}
+              >
                 {formatCurrency(product.price * product.quantity)}
               </TableCell>
+              <TableCell>
+                <SalesTableDropdownMenu
+                  product={product}
+                  className="actions"
+                  data-testing="actions"
+                  onDelete={onDelete}
+                />
+              </TableCell>
+              <TableCell></TableCell>
             </TableRow>
           ))}
         </TableBody>
