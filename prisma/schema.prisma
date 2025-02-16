@@ -23,12 +23,12 @@ model Product {
 
 model Sale {
   id   String   @id @default(uuid())
-  data DateTime
+  date DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  products SaleProduct[]
+  saleProducts SaleProduct[]
 
   @@map("sales")
 }
@@ -36,9 +36,9 @@ model Sale {
 model SaleProduct {
   id        String  @id @default(uuid())
   saleId    String
-  sale      Sale    @relation(fields: [saleId], references: [id])
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
   productId String
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   unitPrice Decimal @db.Decimal(10, 2)
   quantity  Int
 
