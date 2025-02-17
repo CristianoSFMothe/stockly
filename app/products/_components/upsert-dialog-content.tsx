@@ -63,13 +63,14 @@ const UpsertProductDialogContent = ({
 
   const isEditing = !!defaultValues;
 
+  const onSubmit = (data: UpsertProductSchema) => {
+    executeUpsertProduct({ ...data, id: defaultValues?.id });
+  };
+
   return (
     <DialogContent>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(executeUpsertProduct)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <AlertDialogHeader>
             <DialogTitle>{isEditing ? "Editar" : "Criar"}</DialogTitle>
             <DialogDescription>Insira as informações abaixo</DialogDescription>
