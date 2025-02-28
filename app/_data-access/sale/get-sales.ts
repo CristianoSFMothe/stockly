@@ -2,12 +2,20 @@ import "server-only";
 
 import { db } from "@/app/_lib/prisma";
 
+interface SaleProductDto {
+  productId: string;
+  quantity: number;
+  productName: string;
+  unitPrice: number;
+}
+
 export interface SaleDto {
   id: string;
   productNames: string;
   totalProducts: number;
   totalAmount: number;
   date: Date;
+  saleProduct: SaleProductDto[];
 }
 
 export const getSales = async (): Promise<SaleDto[]> => {
@@ -33,6 +41,14 @@ export const getSales = async (): Promise<SaleDto[]> => {
     totalProducts: sale.saleProducts.reduce(
       (acc, saleProduct) => acc + saleProduct.quantity,
       0,
+    ),
+    saleProduct: sale.saleProducts.map(
+      (saleProduct): SaleProductDto => ({
+        productId: saleProduct.productId,
+        productName: saleProduct.product.name,
+        quantity: saleProduct.quantity,
+        unitPrice: Number(saleProduct.unitPrice),
+      }),
     ),
   }));
 };
